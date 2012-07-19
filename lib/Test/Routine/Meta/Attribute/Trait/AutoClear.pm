@@ -1,12 +1,12 @@
 package Test::Routine::Meta::Attribute::Trait::AutoClear;
 {
-  $Test::Routine::Meta::Attribute::Trait::AutoClear::VERSION = '0.001'; # TRIAL
+  $Test::Routine::Meta::Attribute::Trait::AutoClear::VERSION = '0.002';
 }
 use Moose::Role;
 
 package Moose::Meta::Attribute::Custom::Trait::AutoClear;
 {
-  $Moose::Meta::Attribute::Custom::Trait::AutoClear::VERSION = '0.001'; # TRIAL
+  $Moose::Meta::Attribute::Custom::Trait::AutoClear::VERSION = '0.002';
 }
 sub register_implementation {
     'Test::Routine::Meta::Attribute::Trait::AutoClear';
@@ -23,7 +23,7 @@ Test::Routine::Meta::Attribute::Trait::AutoClear
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

@@ -1,6 +1,6 @@
 package Test::Routine::DoesAutoClear;
 {
-  $Test::Routine::DoesAutoClear::VERSION = '0.001'; # TRIAL
+  $Test::Routine::DoesAutoClear::VERSION = '0.002';
 }
 use Moose::Role;
 require Test::Routine::Meta::Attribute::Trait::AutoClear;
@@ -24,7 +24,7 @@ Test::Routine::DoesAutoClear
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 
