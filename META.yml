@@ -19,4 +19,4 @@ requires:
   Moose::Exporter: 0
   Moose::Role: 0
   Test::Routine: 0
-version: 0.003
+version: 0.004

@@ -1,6 +1,6 @@
 package Test::Routine::DoesAutoClear;
 {
-  $Test::Routine::DoesAutoClear::VERSION = '0.003';
+  $Test::Routine::DoesAutoClear::VERSION = '0.004';
 }
 # ABSTRACT: The role that's mixed in by Test::Routine::AutoClear
 use Moose::Role;
@@ -26,7 +26,7 @@ Test::Routine::DoesAutoClear - The role that's mixed in by Test::Routine::AutoCl
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 AUTHOR
 

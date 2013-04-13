@@ -1,14 +1,18 @@
 package Test::Routine::AutoClear;
 {
-  $Test::Routine::AutoClear::VERSION = '0.003';
+  $Test::Routine::AutoClear::VERSION = '0.004';
 }
 # ABSTRACT: Enables autoclearing attrs in Test::Routines
 use Test::Routine ();
 use Moose::Exporter;
 
+use Test::Routine::Meta::Builder;
+
+
 Moose::Exporter->setup_import_methods(
     with_meta => [qw{has}],
-    also => 'Test::Routine',
+    as_is     => [qw{builder}],
+    also      => 'Test::Routine',
 );
 
 sub init_meta {
@@ -34,6 +38,11 @@ sub has {
     );
 }
 
+sub builder (&) {
+    my $builder = shift;
+    bless $builder, 'Test::Routine::Meta::Builder';
+}
+
 1;
 
 __END__
@@ -46,7 +55,7 @@ Test::Routine::AutoClear - Enables autoclearing attrs in Test::Routines
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 
@@ -126,6 +135,42 @@ Consider the following Test::Routine:
 It seems to me that, in a perfect world at least, that test should pass. Which
 it does. Huzzah!
 
+=head2 Passing a builder
+
+So... you're writing a Moose object and you want the default value to be an
+empty arrayref. You'll have noticed that you can't write:
+
+    has queue => (
+        is => 'ro',
+        default => [],
+    );
+
+Moose will complain vigorously. And rightly so. If you were to do:
+
+    run_me "Something", { queue => [qw(something)] }
+
+you would rapidly discover E<why> Moose complains. So what's a poor tester to
+do?
+
+Why, take advantage of the very lovely and worthwhile C<builder> helper and
+write this:
+
+    run_me "This works", { queue => builder { [] } };
+
+and Test::Routine::AutoClear will pretend that you _actually_ declared queue
+like so:
+
+    has queue => (
+        is => 'ro',
+        default => sub { [] },
+    );
+
+NB: The builder routine you passed in is called just like a Moose builder
+method, so you get to look at the instance you're building the value
+for. However, right now, this builder is _not_ called lazily, so there's no
+guarantee that attributes that you may depend on have been intialized
+yet. Expect this to be fixed in a future version.
+
 =head1 BUGS
 
 Lots. Including, but not limited to:
@@ -141,11 +186,6 @@ stability.
 
 I'm pretty sure that if you end up mixing in multiple roles that use
 this role then you'll end up clearing your attributes lots of times.
-
-=item *
-
-Resetting to the initializing value only works for non reference values. Need
-some way of passing in a builder for hashrefs etc.
 
 =back
 
