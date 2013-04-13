@@ -1,7 +1,8 @@
 package Test::Routine::DoesAutoClear;
 {
-  $Test::Routine::DoesAutoClear::VERSION = '0.002';
+  $Test::Routine::DoesAutoClear::VERSION = '0.003';
 }
+# ABSTRACT: The role that's mixed in by Test::Routine::AutoClear
 use Moose::Role;
 require Test::Routine::Meta::Attribute::Trait::AutoClear;
 
@@ -16,15 +17,16 @@ after run_test => sub {
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
 
-Test::Routine::DoesAutoClear
+Test::Routine::DoesAutoClear - The role that's mixed in by Test::Routine::AutoClear
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 
@@ -38,4 +40,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

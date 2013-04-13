@@ -1,6 +1,6 @@
 package Test::Routine::AutoClear;
 {
-  $Test::Routine::AutoClear::VERSION = '0.002';
+  $Test::Routine::AutoClear::VERSION = '0.003';
 }
 # ABSTRACT: Enables autoclearing attrs in Test::Routines
 use Test::Routine ();
@@ -33,8 +33,10 @@ sub has {
         %options,
     );
 }
+
 1;
 
+__END__
 
 =pod
 
@@ -44,7 +46,7 @@ Test::Routine::AutoClear - Enables autoclearing attrs in Test::Routines
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
@@ -90,6 +92,40 @@ this all the time:
 And after about the first time, I got bored of doing this. So I started to fix
 it, and here's my first cut.
 
+L<Test::Routine::AutoClear> addresses this by adding a new C<autoclear> key to
+the C<has> arguments. If you set C<autoclear> to a true value on an attribute
+then, after each test is run, all the autoclearing attributes will be reset.
+
+=head2 Clearing logic
+
+Consider the following Test::Routine:
+
+    use Test::More;
+    use Test::Routine::AutoClear;
+    use Test::Routine::Util;
+
+    has some_attrib => (
+        is        => 'ro',
+        default   => 10,
+        lazy      => 1,
+        autoclear => 1,
+        clearer   => 'reset_attrib',
+    );
+
+    test "This should be invariant" => sub {
+        my $self = shift;
+        my $attrib = $self->attrib;
+        $self->reset_attrib;
+        is $self->attrib, $attrib;
+    };
+
+    run_me "Test defaults";
+    run_me "Test initialising", { attrib => 20 };
+    done_testing;
+
+It seems to me that, in a perfect world at least, that test should pass. Which
+it does. Huzzah!
+
 =head1 BUGS
 
 Lots. Including, but not limited to:
@@ -108,10 +144,8 @@ this role then you'll end up clearing your attributes lots of times.
 
 =item *
 
-I think it's reasonable to expect that resetting an attribute that
-didn't get set via a builder should reset the value to the initial
-value that was set via the instantiation params. Or maybe
-C<< autoclear => 1 >> should imply C<< init_arg => undef >>.
+Resetting to the initializing value only works for non reference values. Need
+some way of passing in a builder for hashrefs etc.
 
 =back
 
@@ -137,7 +171,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-

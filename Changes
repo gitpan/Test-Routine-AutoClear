@@ -1,5 +1,11 @@
 Revision history for Test-Routine-AutoClear
 
+0.003     2013-04-13
+
+ - clearing an autocleared variable goes back to the value used at test object
+   creation if one was supplied, otherwise it uses the normal Moose clearer
+   semantics.
+
 0.002     2012-07-19
 
  - Improved the docs slightly
